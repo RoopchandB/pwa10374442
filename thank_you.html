@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Thank You For Booking</title>
+	<!-- Referenced Stylesheets -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+ <style>
+ 	*, ::after, ::before {
+    	box-sizing: initial !important;
+	}
+ </style>       
+</head>
+<body>
+<!-- Details for the Movie Booked by the User & Thank You Message -->
+    <div id="map" style="width:400px;height:400px;background:yellow"></div>
+	
+	<div class="container thank_you_div" style="text-align: center;">
+		<div class="col">
+			<img src="images/thumbsup.png" class="img-fluid thumbsup"   alt="">
+			<h3 style="color: white;padding: 2% 0;">Thank You</h3>
+		</div>	
+		<div class="col">
+			<div class="media media-thank-you">
+			    <div class="media-left">
+			      <img src="images/movie.png" class="media-object img-fluid" style="width:10em;">
+			     <h3 style="color: red;">Booking Confirmed</h3> 
+			    </div>
+			    <div class="media-body">
+			      <p id="movie_name" class="media-heading" style="font-weight: bold;font-size: 15px;color:#2950d4;"></p>
+				  <p style="font-weight: bold;font-size: 15px" id="movie_day"></p>
+				  	<p style="font-weight: bold;"><span id="movie_time"></span>
+				  	<span id="movie_type"></span>
+				  	<span id="movie_price"></span>
+				  	</p>
+				  	<p style="font-weight: bold;font-size: 15px" id="seat_nos"><span>Seat No's :  </span></p>
+			    </div>
+		  	</div>
+		</div>	
+	</div>
+	 
+
+<!-- Referenced Scripts -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>	
+<script  src="js/app.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu-916DdpKAjTmJNIgngS6HL_kDIKU0aU&callback=myMap"></script>
+<!--
+To use this code on your website, get a free API key from Google.
+Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
+-->
+
+
+<script>
+	
+	$(function(){
+
+		// Getting Movie Data from local storage 
+		var movie_detail = localStorage.getItem("movie_details");
+		var movie_price  = localStorage.getItem("movie_price");
+		var movie_type   = localStorage.getItem("movie_type");
+		var seat_nos = [];
+		var seat_nos = localStorage.getItem("seat_nos");
+		
+		seat_nos = seat_nos.split(",");
+	 	
+	 	// Displaying Movie Details to the User
+
+	 	for(var i = 0; i < seat_nos.length ; i++){
+	 		$('#seat_nos').append('<span>' + seat_nos[i] + '</span>' +  "  ");
+	 	}
+		movie_detail = movie_detail.split("-");
+		$('#movie_day').text("On  " + movie_detail[0].toUpperCase());
+		$('#movie_time').text("At  " + movie_detail[1].toUpperCase());
+		$('#movie_name').text(movie_detail[2].toUpperCase());
+		$('#movie_type').text("Seat Type : " + movie_type.toUpperCase());
+		$('#movie_price').text("Price : " + "€" +movie_price * seat_nos.length);
+	});
+	
+function myMap() {
+var mapOptions = {
+    center: new google.maps.LatLng(51.5, -0.12),
+    zoom: 10,
+    mapTypeId: google.maps.MapTypeId.HYBRID
+}
+var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Book Seats</title>
+	<!-- Referenced Stylesheets -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    </head>
+<body>
+	<!-- Form to Book Seats for the Selected Movie -->
+	<form id="book_form">
+	<div class="mdl-layout mdl-js-layout">
+		<header class="mdl-layout__header">
+					<p class="heading_title mdl-typography--title mdl-typography--text-center">How many seats?</p>
+    	</header>
+    	<div class="mdl-layout__drawer">
+		    <span class="mdl-layout-title">Notification Permission</span>
+		    <nav class="mdl-navigation">
+		      	<!-- Colored raised button -->
+		      	<button class="enable-notifications mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+				  Enable 
+				</button>
+			</nav>
+		  </div>
+    	<div class="mdl-grid select_seats_div">
+  			<div class="mdl-cell mdl-cell--4-col" style="text-align: center;">
+  				<!-- Simple Select -->
+			    <div class="mdl-textfield mdl-js-textfield getmdl-select">
+			        <input type="text" value="" class="mdl-textfield__input" id="seat_no" readonly>
+			        <input type="hidden" value="" name="seat_no" id="no_of_seat">
+			        <label for="seat_no" class="mdl-textfield__label">Select Seats</label>
+			        <ul for="sample1" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+			            <li class="mdl-menu__item" data-val="1">1</li>
+			            <li class="mdl-menu__item" data-val="2">2</li>
+			            <li class="mdl-menu__item" data-val="3">3</li>
+			            <li class="mdl-menu__item" data-val="4">4</li>
+			            <li class="mdl-menu__item" data-val="5">5</li>
+			        </ul>
+			    </div>
+  			</div>
+			<div class="mdl-cell mdl-cell--4-col" style="text-align: center;">
+			  	<div class="demo-list-action mdl-list">
+				  <div class="mdl-list__item">
+				    <span class="mdl-list__item-primary-content movie_type">
+				      <span>Gold</span>
+				    </span>
+				    <a class="mdl-list__item-secondary-action movie_price"  href="#">€20</a>
+				  </div>
+				  <div class="mdl-list__item">
+				    <span class="mdl-list__item-primary-content movie_type">
+				      <span>Silver</span>
+				    </span>
+				    <a class="mdl-list__item-secondary-action movie_price"  href="#">€30</a>
+				  </div>
+				  <div class="mdl-list__item">
+				    <span class="mdl-list__item-primary-content movie_type">
+				      <span>Platinum</span>
+				    </span>
+				    <span class="mdl-list__item-secondary-content">
+				      <a class="mdl-list__item-secondary-action movie_price"  href="#">€40</a>
+				  </span>
+				  <input type="hidden" id="price_movie" value="">
+				  </div>
+				</div>
+		  	</div>
+  			<div class="mdl-cell mdl-cell--4-col" style="text-align: center;">
+  				<!-- Accent-colored raised button with ripple -->
+				<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored book_seat_btn">
+				  Book Now
+				</button>
+  			</div>
+		</div>
+		
+		<div class="container thank_you_div thank_you_div_bookseat" style="text-align: center;">
+			<div class="col">
+			<div class="media media-thank-you">
+			    <div class="media-left">
+			      <img src="images/movie.png" class="media-object img-fluid" style="width:10em;">
+			     <h3 style="color: red;">Booking For</h3> 
+			    </div>
+			    <div class="media-body">
+			      <p id="movie_name" class="media-heading" style="font-weight: bold;font-size: 15px;color:#2950d4;"></p>
+				  <p style="font-weight: bold;font-size: 15px" id="movie_day"></p>
+				  <p style="font-weight: bold;"><span id="movie_time"></span></p>
+				</div>
+		  	</div>
+		  </div>
+		</div>  	
+	</div>
+	</form>	
+
+	<!-- Referenced Scripts -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script defer src="js/material.js"></script>
+<script defer src="js/material-select.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script  defer  src="js/custom.js"></script>
+<script  src="js/app.js"></script>
+<script>
+	$(function(){
+		// Variable defined for Usage
+		var no_of_seat, movie_price;	
+		// Getting Details of the Movie chosen by the User from the Local Storage
+		var movie_detail = localStorage.getItem("movie_details");
+		movie_detail = movie_detail.split("-");
+		$('#movie_day').text("On  " + movie_detail[0].toUpperCase());
+		$('#movie_time').text("At  " + movie_detail[1].toUpperCase());
+		$('#movie_name').text(movie_detail[2].toUpperCase());
+		
+		// Functionality for form submission of Booking Seats
+		
+		$('body').on('click','.movie_type', function(e){
+			e.preventDefault();
+			$('.movie_type').css({'color': 'black','font-weight':'normal'});
+			$(this).css({'color':'#3F51B5','font-weight':'bold'});	
+			movie_price = $(this).next().text();
+			movie_price = movie_price.substr(1);
+			$('#price_movie').val(movie_price);
+			var movie_type = $(this).find('span').text();
+			movie_price = localStorage.setItem("movie_price", movie_price);
+			movie_type = localStorage.setItem("movie_type", movie_type);
+		});
+
+		//  Validation of Booking Seats Form
+
+		$("#book_form").submit(function(evt){
+			evt.preventDefault();
+			var price = $('#price_movie').val();
+		   	if($('#seat_no').val() == ""){
+		   		alert('Please Select no. of Seat(s)');
+		   	}else if(price == ""){
+		   		alert('Please Select the Seat type');
+		   	}else{
+		   		no_of_seat = $('#no_of_seat').val();
+				localStorage.setItem("no_of_seat", no_of_seat);
+		   		window.location.href = 'theatre_view.html';
+		   	}
+		});
+
+		//  Preventing Default functionality for 'movie price' placeholder as it's an anchor tag
+		$('body').on('click','.movie_price', function(e){
+			e.preventDefault();
+		});	
+	});
+</script>
+</body>
+</html>
